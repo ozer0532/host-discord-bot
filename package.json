@@ -1,0 +1,22 @@
+{
+  "name": "host-discord-bot",
+  "version": "0.53.2",
+  "description": "Personal discord bot. Mainly for learning",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ozer0532",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/opus": "^0.4.0",
+    "discord.js": "^12.5.1",
+    "ffmpeg": "^0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "npm": "^7.6.0",
+    "sequelize": "^6.5.0",
+    "sqlite3": "^5.0.2",
+    "youtube-search": "^1.1.6",
+    "ytdl-core": "^4.5.0"
+  }
+}
