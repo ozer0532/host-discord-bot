@@ -123,6 +123,10 @@ function play(guild, song, client) {
     .play(ytdl(song.url, {
         quality: 'highestaudio',
         highWaterMark: 1 << 25,
+        requestOptions: {
+            headers: {
+              cookie: getConfig("cookie"),
+        }},
     }))
     .on("finish", () => {
         serverQueue.songs.shift();
