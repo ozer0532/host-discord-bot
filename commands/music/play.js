@@ -27,12 +27,6 @@ module.exports = {
             return message.channel.send(
             "You need to be in a voice channel to play music!"
             );
-        // const permissions = voiceChannel.permissionsFor(message.client.user);
-        // if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
-        //     return message.channel.send(
-        //     "I need the permissions to join and speak in your voice channel!"
-        //     );
-        // }
 
         // Check if the argument is a number - then it is a queue selection
         if (!isNaN(args.join(' ')) && args[0] >= 1 && args[0] <= 5) {
@@ -154,7 +148,11 @@ async function searchSong(term, message, client) {
 
     await search(term, opts, function(err, results) {
         if(err) return console.log(err);
-      
+        
+        if (results.length == 0) {
+            return searchResult.edit("Cannot find the song you're looking for.");
+        }
+
         // console.dir(results);
         Promise.all(results.map(async (value, index) => { 
             let songInfo = await ytdl.getInfo(value.link);
