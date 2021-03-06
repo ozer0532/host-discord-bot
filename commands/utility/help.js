@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const config = require('../../config.js');
 const getConfig = require('../../config.js');
 
 module.exports = {
@@ -15,6 +16,7 @@ module.exports = {
         `> \`ellipsis ...\` - Another sub-command is required`,
         `> \`: type\` - Describes a data type of an argument`,
     ].join('\n'),
+    shortDescription: `Shows information on commands.`,
 	aliases: ['h', '?'],
 	usage: '[<command>|<category>]',
     uses: [
@@ -31,30 +33,49 @@ module.exports = {
         let embed = new Discord.MessageEmbed();
         const { commands } = message.client;
 
-        // Send all commands to the DM
+        // If the command is !help
         if (!args.length) {
-            data.push('Here\'s a list of all my commands:');
-            data.push(commands.map(command => command.name).join(', '));
-            data.push(`\nYou can send \`${getConfig("prefix")}help [command name]\` to get info on a specific command!`);
+            data.push(`Use \`${getConfig("prefix")}help <category>\` to find more information\non commands on a specific category.\n`);
+            data.push('Here\'s a list of all of my commands:');
+            
+            // Sort into categories
+            let categories = getCategories(commands);
+            for (const [key, value] of Object.entries(categories)) {
+                data.push(`**${key.charAt(0).toUpperCase() + key.slice(1)}:**`);
+                data.push(`\`${value.map(v => v.name).join(', ')}\``);
+            }
 
-            return message.author.send(data, { split: true })
-                .then(() => {
-                    if (message.channel.type === 'dm') return;
-                    message.reply('I\'ve sent you a DM with all my commands!');
-                })
-                .catch(error => {
-                    console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('it seems like I can\'t DM you! Do you have DMs disabled?');
-                });
+            embed = embed.setTitle('Help');
+            embed = embed.setDescription(data.join('\n'));
+
+            return message.channel.send(embed);
         }
 
         const name = args[0].toLowerCase();
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
-
+        
         if (!command) {
-            return message.reply('that\'s not a valid command!');
+            const category = commands.find(c => c.folder === name).folder;
+
+            // If the command/category is not found
+            if (!category) {
+                return message.reply('that\'s not a valid command!');
+            }
+
+            // If the command is !help <category>
+            data.push(`Use \`${getConfig("prefix")}help <command>\` to find more information\non specific commands.\n`);
+            data.push(`Here\'s a list of all commands under the **${category}** category:`);
+
+            let categories = getCategories(commands);
+            categories[name].map(c => data.push(`**${c.name}** - ${c.shortDescription || c.description}`));
+
+            embed = embed.setTitle('Help');
+            embed = embed.setDescription(data.join('\n'));
+
+            return message.channel.send(embed);
         }
 
+        // If the command is !help <command>
         if (command.description) data.push(`${command.description}\n`);
 
         if (command.aliases) data.push(`**Aliases:** \`${command.aliases.join('\`, \`')}\``);
@@ -64,9 +85,22 @@ module.exports = {
         if (command.arguments) data.push(`**Arguments:** \n${command.arguments}`);
         if (command.cooldown !== undefined) data.push(`**Cooldown:** ${command.cooldown} second(s)`);
 
-        embed = embed.setTitle(command.name).setDescription(command.description);
+        embed = embed.setTitle(command.name);
         embed = embed.setDescription(data.join('\n'));
 
         message.channel.send(embed);
 	},
 };
+
+function getCategories(commands) {
+    let categories = {}
+    commands.map(command => {
+        if (!command.adminOnly) {
+            if (!categories[command.folder])
+                categories[command.folder] = [command];
+            else
+                categories[command.folder].push(command);
+        }
+    });
+    return categories;
+}

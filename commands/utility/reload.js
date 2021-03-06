@@ -5,6 +5,7 @@ module.exports = {
     description: 'Reloads a command',
     args: true,
     usage: '<command>',
+    adminOnly: true,
 	execute(message, args) {
         if (message.author.id === getConfig("admin")) {
             const commandName = args[0].toLowerCase();
