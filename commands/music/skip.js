@@ -12,7 +12,7 @@ module.exports = {
     ].join('\n'),
     arguments: [
         "`<index> : integer` - The index/order of a song in the queue.",
-        "`<range> : range` - The range (in the format `n-m`)  of songs in the queue.",
+        "`<range> : range` - The range (in the format `m-n`)  of songs in the queue.",
     ].join('\n'),
     botPermissions: ['CONNECT', 'SPEAK'],
     guildOnly: true,

@@ -87,6 +87,7 @@ async function execute(url, message, client) {
             queueContract.connection = connection;
             // Play the music
             play(message.guild, queueContract.songs[0], client);
+            message.channel.send(`Playing **${song.title}**`);
         } catch (err) {
             console.log(err);
             // Remove from the vc
@@ -101,7 +102,7 @@ async function execute(url, message, client) {
         serverQueue.songs.push(song);
 
         // return message
-        return message.channel.send(`${song.title} has been added to the queue!`);
+        return message.channel.send(`**${song.title}** has been added to the queue!`);
     }
 }
 
@@ -189,7 +190,7 @@ async function playPickedSong(pick, message, client) {
         return message.channel.send("Run a search for a song first!")
     }
     
-    // Remove previous message
+    // Edit previous message
     let guild = client.guilds.resolve(searchResult.guildId);
     if (!guild.available) return;
     let channel = guild.channels.resolve(searchResult.channelId);
