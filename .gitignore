@@ -118,6 +118,8 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/node
 
+.vscode/
+
 config.json
 database.sqlite
 template_command.js

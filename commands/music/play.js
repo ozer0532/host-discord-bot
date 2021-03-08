@@ -8,14 +8,16 @@ module.exports = {
     description: 'Play a song.',
     args: true,
 	aliases: ['p'],
-    usage: '(<url>|<searchterm...>)',
+    usage: '(<url>|<searchterm...>|<searchresult>)',
     uses: [
         "`${prefix}play <url>` - Play music from the given URL.",
-        "`${prefix}play <searchterm>` - Do a search for a music track.",
+        "`${prefix}play <searchterm...>` - Do a search for a music track.",
+        "`${prefix}play <searchresult>` - Pick a track from the search results.",
     ].join("\n"),
     arguments: [
         "`<url> : string` - The Youtube URL to play music from.",
         "`<searchterm...> : string` - The search term for the song.",
+        "`<searchresult> : integer` The picked track number listed by the search results.",
     ].join("\n"),
     // userPermissions: [],
     botPermissions: ['CONNECT', 'SPEAK'],
