@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## [0.3.0] - 2021-03-09
+
+- Added `changelog` command in the `bot-info` category.
+- Added `loop` and `shuffle` command in the `music` category.
+- Added `roll` command in the `utilities` category.
+- `play` can now accept Youtube playlists as URLs.
+
+### TL;DR
+
 ### Added
 
 - `changelog` command (`bot-info` category):
@@ -28,7 +37,7 @@
 - `help` command (`bot-info` category):
   - Bot now sends an error message when input is not a valid command.
 
-## [0.0.2] - 2021-03-07
+## [0.2.0] - 2021-03-07
 
 ### TL;DR
 
@@ -54,7 +63,7 @@
   - Fixed error when no song has been found by the search.
   - Fixed error where the bot returns `Error: Status code: 429` in which the music player will stop working after a couple of uses.
 
-## [0.0.1] - 2021-03-05
+## [0.1.0] - 2021-03-05
 
 ### TL;DR
 
@@ -90,5 +99,6 @@
   - `help` to show all commands available.
   - `help <command>` to show details on a specific command.
 
-[0.0.2]: https://github.com/ozer0532/host-discord-bot/compare/5000d8c49b392eba803e2f678cd518e2fb59fd74...509a3b9f98d4f74e50877be84869b139a5d33025
-[0.0.1]: https://github.com/ozer0532/host-discord-bot/tree/5000d8c49b392eba803e2f678cd518e2fb59fd74
+[0.3.0]: https://github.com/ozer0532/host-discord-bot/compare/509a3b9f98d4f74e50877be84869b139a5d33025...68727697232e3998552eb91c8f68805ad0db47f9
+[0.2.0]: https://github.com/ozer0532/host-discord-bot/compare/5000d8c49b392eba803e2f678cd518e2fb59fd74...509a3b9f98d4f74e50877be84869b139a5d33025
+[0.1.0]: https://github.com/ozer0532/host-discord-bot/tree/5000d8c49b392eba803e2f678cd518e2fb59fd74
