@@ -1,6 +1,13 @@
 const Discord = require('discord.js');
 const fetch = require("node-fetch");
 
+class HTTPResponseError extends Error {
+	constructor(response, ...args) {
+		this.response = response;
+		super(`HTTP Error Response: ${res.status} ${res.statusText}`, ...args);
+	}
+}
+
 module.exports = {
 	name: 'changelog',
     description: 'Shows the bot change log.',
@@ -21,7 +28,13 @@ module.exports = {
     // adminOnly: true,
 	async execute(message, args, client) {
         fetch('https://raw.githubusercontent.com/ozer0532/host-discord-bot/master/CHANGELOG.md')
-        .then(res => res.text())
+        .then(res => {
+            if (res.ok) {
+                return res.text();
+            } else {
+                throw new HTTPResponseError(res);
+            }
+        })
         .then(res => {
 
             if (args[0]) {
