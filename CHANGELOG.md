@@ -4,12 +4,12 @@
 
 ## [0.3.0] - 2021-03-09
 
+### TL;DR
+
 - Added `changelog` command in the `bot-info` category.
 - Added `loop` and `shuffle` command in the `music` category.
 - Added `roll` command in the `utilities` category.
 - `play` can now accept Youtube playlists as URLs.
-
-### TL;DR
 
 ### Added
 
