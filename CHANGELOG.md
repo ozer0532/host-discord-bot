@@ -7,6 +7,7 @@
 ### TL;DR
 
 - Fixed some errors in the `changelog` command.
+- Fixed error when opening a command's `help` entry.
 
 ### Fixed
 
@@ -111,7 +112,7 @@
   - `help` to show all commands available.
   - `help <command>` to show details on a specific command.
 
-[0.3.1]: https://github.com/ozer0532/host-discord-bot/compare/68727697232e3998552eb91c8f68805ad0db47f9...25ff1af8718ccff6a3e6e65fc80758246ebe8b2d
+[0.3.1]: https://github.com/ozer0532/host-discord-bot/compare/68727697232e3998552eb91c8f68805ad0db47f9...11a683ccf14ac6454c828c143cdc06f7dfb13d0c
 [0.3.0]: https://github.com/ozer0532/host-discord-bot/compare/509a3b9f98d4f74e50877be84869b139a5d33025...68727697232e3998552eb91c8f68805ad0db47f9
 [0.2.0]: https://github.com/ozer0532/host-discord-bot/compare/5000d8c49b392eba803e2f678cd518e2fb59fd74...509a3b9f98d4f74e50877be84869b139a5d33025
 [0.1.0]: https://github.com/ozer0532/host-discord-bot/tree/5000d8c49b392eba803e2f678cd518e2fb59fd74
