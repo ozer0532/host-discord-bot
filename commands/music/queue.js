@@ -6,7 +6,7 @@ module.exports = {
 	aliases: ['list', 'q', 'ls'],
     usage: '[<page>|all]',
     uses: [
-        "`${prefix}queue ` - Display the first 10 tracks in the queue.",
+        "`${prefix}queue` - Display the first 10 tracks in the queue.",
         "`${prefix}queue <page>` - Display a page in the queue.",
         "`${prefix}queue all` - Display all tracks in the queue.",
     ].join("\n"),
