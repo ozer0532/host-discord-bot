@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const config = require('../../config.js');
 const getConfig = require('../../config.js');
 
 module.exports = {
@@ -55,11 +54,11 @@ module.exports = {
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
         
         if (!command) {
-            const category = commands.find(c => c.folder === name).folder;
+            const category = commands.find(c => c.folder === name)?.folder;
 
             // If the command/category is not found
             if (!category) {
-                return message.reply('that\'s not a valid command!');
+                return message.channel.send(`**${args[0]}** is not a valid command/category!`);
             }
 
             // If the command is !help <category>

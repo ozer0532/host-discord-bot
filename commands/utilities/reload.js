@@ -4,6 +4,7 @@ module.exports = {
 	name: 'reload',
     description: 'Reloads a command',
     args: true,
+	aliases: ['rr'],
     usage: '<command>',
     adminOnly: true,
 	execute(message, args) {

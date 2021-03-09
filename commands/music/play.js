@@ -1,5 +1,6 @@
-const ytdl = require('ytdl-core');
 const getConfig = require('../../config.js');
+const ytdl = require('ytdl-core');
+const ytpl = require('ytpl');
 const search = require('youtube-search');
 
 // https://gabrieltanner.org/blog/dicord-music-bot
@@ -15,7 +16,7 @@ module.exports = {
         "`${prefix}play <searchresult>` - Pick a track from the search results.",
     ].join("\n"),
     arguments: [
-        "`<url> : string` - The Youtube URL to play music from.",
+        "`<url> : string` - The URL to play music from. Currently known URLs: Youtube video and Youtube playlists.",
         "`<searchterm...> : string` - The search term for the song.",
         "`<searchresult> : integer` The picked track number listed by the search results.",
     ].join("\n"),
@@ -39,16 +40,16 @@ module.exports = {
         let url = args[0];
 
         // Check if args is valid URL
-        if (!ytdl.validateURL(url)) {
+        if (!resolveURL(url)) {
             searchSong(args.join(' '), message, client);
             return;
         }
 
-        execute(url, message, client);
+        getTracks(url, message, client);
 	},
 };
 
-async function execute(url, message, client) {
+async function execute(url, message, client, printResponse = true) {
     // get the queue for the server
     const serverQueue = client.database.queue.get(message.guild.id);
     // Get voice channel
@@ -74,7 +75,8 @@ async function execute(url, message, client) {
             connection: null,
             songs: [],
             volume: 5,
-            playing: true
+            loop: 'off',
+            shuffle: false,
         };
 
         // Add the queue to the queues list
@@ -89,7 +91,10 @@ async function execute(url, message, client) {
             queueContract.connection = connection;
             // Play the music
             play(message.guild, queueContract.songs[0], client);
-            message.channel.send(`Playing **${song.title}**`);
+
+            if (printResponse) {
+                return message.channel.send(`Playing **${song.title}**`);
+            }
         } catch (err) {
             console.log(err);
             // Remove from the vc
@@ -104,7 +109,9 @@ async function execute(url, message, client) {
         serverQueue.songs.push(song);
 
         // return message
-        return message.channel.send(`**${song.title}** has been added to the queue!`);
+        if (printResponse) {
+            return message.channel.send(`**${song.title}** has been added to the queue!`);
+        }
     }
 }
 
@@ -132,7 +139,23 @@ function play(guild, song, client) {
         }},
     }))
     .on("finish", () => {
-        serverQueue.songs.shift();
+        // Check loop settings
+        if (serverQueue.loop == 'single') {
+            // Do nothing
+        } else if (serverQueue.loop == 'all') {
+            serverQueue.songs.push(serverQueue.songs.shift());
+        } else {
+            serverQueue.songs.shift();
+        }
+
+        // Check shuffle settings
+        if (serverQueue.shuffle && serverQueue.loop != 'single') {
+            let nextSongIndex = Math.floor(Math.random() * serverQueue.songs.length);
+            console.log(nextSongIndex);
+            let nextSong = serverQueue.songs.splice(nextSongIndex, 1);
+            serverQueue.songs.splice(0, 0, ...nextSong);
+        }
+
         play(guild, serverQueue.songs[0], client);
     })
     .on("error", error => { 
@@ -205,4 +228,39 @@ async function playPickedSong(pick, message, client) {
 
     // Remove search results from database
     client.database.musicSearchResult.destroy({ where: { userId: message.member.id } });
+}
+
+function resolveURL(url) {
+    // Check youtube
+    if (ytdl.validateURL(url)) {
+        if (ytpl.validateID(url)) {
+            return 'ytvidpl';
+        }
+
+        return 'ytvid';
+    }
+    if (ytpl.validateID(url)) {
+        return 'ytpl';
+    }
+
+    // URL invalid
+    return undefined;
+}
+
+async function getTracks(url, message, client) {
+    let type = resolveURL(url);
+
+    if (type == 'ytvid') {
+        execute(url, message, client);
+        return;
+    }
+    if (type == 'ytpl' || type == 'ytvidpl') {
+        let res = await ytpl(url, { limit: Infinity });
+        for (let i = 0; i < res.items.length; i++) {
+            let element = res.items[i];
+            await execute(element.shortUrl, message, client, false);
+        }
+        message.channel.send(`**${res.items.length}** items from **${res.title}** has been added to the queue.`)
+        return;
+    }
 }

@@ -2,12 +2,31 @@
 
 ## Unreleased
 
+### Added
+
+- `changelog` command (`bot-info` category):
+  - `changelog` to list the latest changelogs.
+  - `changelog <version>` to show the changelogs of a specific thread.
+- `play` command (`music` category):
+  - Added the ability to get all tracks from a Youtube playlist.
+- `loop` command (`music` category):
+  - `loop` to loop between loop settings.
+  - `loop (off|single|loop)` to select a loop setting.
+- `shuffle` command (`music` category):
+  - `shuffle` to loop between shuffle settings.
+  - `shuffle (off|on)` to set shuffle to off/on.
+
 ### Changed
 
 - `play` command (`music` category):
   - Added the missing usage description `play <searchresult>` to select a track from the search results.
 - `help` command (`bot-info` category):
   - Moved `help` from `utility` to `bot-info`
+
+### Fixed
+
+- `help` command (`bot-info` category):
+  - Bot now sends an error message when input is not a valid command.
 
 ## [0.0.2] - 2021-03-07
 
