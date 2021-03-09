@@ -36,11 +36,10 @@ module.exports = {
             }
         })
         .then(res => {
-
+            console.log(args[0]);
             if (args[0]) {
                 // Get specific tag
                 let data = getTag(args[0], res);
-
                 if (data) {
                     data += ('\n\nSee the full changelog at https://github.com/ozer0532/host-discord-bot/blob/master/CHANGELOG.md');
 
@@ -84,17 +83,16 @@ function getTLDR(text) {
 }
 
 function getTag(tag, text) {
-    let tagRegex = tag.replaceAll('.', '\\.')
+    let tagRegex = tag.replace(/\./g, '\\.')
 
     let regex = new RegExp('(?<=## \\[' + tagRegex + '\\].*\n\n+)(.|\\s)+?(?=\n\n((## )|\\[(\\d|\\.|\\w|\\-|\\+)+\\]: ))');
     let desc = text.match(regex);
 
     // Replace ### with bold    
-    desc = desc[0].replaceAll(/### (.+)\n\n/g, '**$1**\n');
-    console.log(desc);
+    desc = desc[0].replace(/### (.+)\n\n/g, '**$1**\n');
 
     // Replace 1st indent with -->
-    desc = desc.replaceAll(/\n\s+-/g, '\n-->');
+    desc = desc.replace(/\n\s+-/g, '\n-->');
     
     return desc;
 }
