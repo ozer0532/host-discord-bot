@@ -14,6 +14,10 @@
 - `changelog` command (`bot-info` category):
   - Fixed error where the bot does not reply anything when asked for a specific tag.
   - Fixed error where the bot doesn't send a reply when a tag is invalid.
+- `help` command (`bot-info` category):
+  - Fixed error when looking up a command's `help` entry.
+- `queue` command (`music` category):
+  - Fixed minor typo in the `help` entry.
 
 ## [0.3.0] - 2021-03-09
 

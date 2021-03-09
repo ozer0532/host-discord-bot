@@ -80,7 +80,7 @@ module.exports = {
         if (command.aliases) data.push(`**Aliases:** \`${command.aliases.join('\`, \`')}\``);
         if (command.usage) data.push(`**Usage:** \`${getConfig("prefix")}${command.name} ${command.usage}\``);
         else data.push(`**Usage:** \`${getConfig("prefix")}${command.name}\``);
-        if (command.uses) data.push(`**Uses:** \n${command.uses}`.replace(/\${prefix}/, `${getConfig("prefix")}`));
+        if (command.uses) data.push(`**Uses:** \n${command.uses}`.replace(/\${prefix}/g, `${getConfig("prefix")}`));
         if (command.arguments) data.push(`**Arguments:** \n${command.arguments}`);
         if (command.cooldown !== undefined) data.push(`**Cooldown:** ${command.cooldown} second(s)`);
 
