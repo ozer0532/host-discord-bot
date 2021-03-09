@@ -39,16 +39,17 @@ module.exports = {
             console.log(args[0]);
             if (args[0]) {
                 // Get specific tag
-                let data = getTag(args[0], res);
-                if (data) {
+                try {
+                    let data = getTag(args[0], res);
                     data += ('\n\nSee the full changelog at https://github.com/ozer0532/host-discord-bot/blob/master/CHANGELOG.md');
-
+    
                     let embed = new Discord.MessageEmbed();
                     embed = embed.setTitle('Changelog - ' + args[0]);
                     embed = embed.setDescription(data);
-        
+            
                     return message.channel.send(embed);
-                } else {
+
+                } catch {
                     return message.channel.send(`There is no version with tag ${args[0]}!`);
                 }
                 
