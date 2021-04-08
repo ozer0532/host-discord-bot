@@ -146,6 +146,7 @@ Nothing is unreleased.. Hooray!
   - `help` to show all commands available.
   - `help <command>` to show details on a specific command.
 
+[0.4.0]: https://github.com/ozer0532/host-discord-bot/compare/eaf4721a03c2c188486e4a98559282ea0c865677...v0.4.0
 [0.3.1]: https://github.com/ozer0532/host-discord-bot/compare/68727697232e3998552eb91c8f68805ad0db47f9...eaf4721a03c2c188486e4a98559282ea0c865677
 [0.3.0]: https://github.com/ozer0532/host-discord-bot/compare/509a3b9f98d4f74e50877be84869b139a5d33025...68727697232e3998552eb91c8f68805ad0db47f9
 [0.2.0]: https://github.com/ozer0532/host-discord-bot/compare/5000d8c49b392eba803e2f678cd518e2fb59fd74...509a3b9f98d4f74e50877be84869b139a5d33025
