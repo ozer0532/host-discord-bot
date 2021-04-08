@@ -2,6 +2,7 @@ const getConfig = require('../../config.js');
 const ytdl = require('ytdl-core');
 const ytpl = require('ytpl');
 const search = require('youtube-search');
+const utils = require('../../utils.js');
 
 // https://gabrieltanner.org/blog/dicord-music-bot
 module.exports = {
@@ -110,7 +111,7 @@ async function execute(url, message, client, printResponse = true) {
 
         // return message
         if (printResponse) {
-            return message.channel.send(`**${song.title}** has been added to the queue!`);
+            return message.channel.send(`**${utils.escapeMarkdown(song.title)}** has been added to the queue!`);
         }
     }
 }
@@ -162,7 +163,7 @@ function play(guild, song, client) {
         console.error(error);
         serverQueue.songs.shift();
         play(guild, serverQueue.songs[0], client);
-        message.channel.send(`There was an error trying to play **${song.title}**, skipping the track.`);
+        message.channel.send(`There was an error trying to play **${utils.escapeMarkdown(song.title)}**, skipping the track.`);
     });
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 }
@@ -174,7 +175,18 @@ async function searchSong(term, message, client) {
         type: "video"
     };
 
-    let searchResult = await message.channel.send('Fetching search results..');
+    // Remove previous search result
+    let searchResult = await client.database.musicSearchResult.findOne({ where: { userId: message.member.id } });
+    if (searchResult) {
+        let guild = client.guilds.resolve(searchResult.guildId);
+        if (!guild.available) return;
+        let channel = guild.channels.resolve(searchResult.channelId);
+        let prevMessage = channel.messages.resolve(searchResult.messageId)
+        prevMessage.delete();
+    }
+
+    // Start new search
+    searchResult = await message.channel.send('Fetching search results..');
 
     await search(term, opts, function(err, results) {
         if(err) return console.log(err);
@@ -190,7 +202,7 @@ async function searchSong(term, message, client) {
                 .toISOString()
             if ((songInfo.videoDetails.lengthSeconds >= 3600)) duration = duration.substr(11, 8);
             else duration = duration.substr(14, 5);
-            return `**${index+1}:** ${value.title} **[${duration}]** by **${value.channelTitle}**`;
+            return `**${index+1}:** ${utils.escapeMarkdown(value.title)} **[${duration}]** by **${utils.escapeMarkdown(value.channelTitle)}**`;
         })).then((value) => {
             client.database.musicSearchResult.destroy({ where: { userId: message.member.id } });
             client.database.musicSearchResult.create({
@@ -260,7 +272,7 @@ async function getTracks(url, message, client) {
             let element = res.items[i];
             await execute(element.shortUrl, message, client, false);
         }
-        message.channel.send(`**${res.items.length}** items from **${res.title}** has been added to the queue.`)
+        message.channel.send(`**${res.items.length}** items from **${utils.escapeMarkdown(res.title)}** has been added to the queue.`)
         return;
     }
 }

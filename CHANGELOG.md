@@ -2,8 +2,22 @@
 
 ## Unreleased
 
+Nothing is unreleased.. Hooray!
+
+## [0.4.0] - 2021-04-08
+
+### TL;DR
+
+- Added `lyrics` command in the `music` category.
+- Added `poll` command in the `utilities`category.
+- `help` now displays complex arguments
+- `play` search results now render correctly with special characters.
+
 ### Added
 
+- `lyrics` command (`music` category):
+  - `lyrics` to find lyrics for the current music
+  - `lyrics <searchterm>` to find lyrics on a search term
 - `poll` command (`utilities` category):
   - `poll <pollquestion> | {polloptions}` to create a quick reaction poll
 
@@ -11,6 +25,12 @@
 
 - `help` command (`bot-info` category):
   - Added help description for complex arguments
+
+### Fixed
+
+- `play` command (`music` category):
+  - Fixed music titles displaying incorrectly because of being parsed as markdown
+  - Fixed previous search result not cleared when running a new search
 
 ## [0.3.1] - 2021-03-09
 

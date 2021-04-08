@@ -50,7 +50,8 @@ module.exports = {
             return;
         }
 
-        let dieName = args[0].toLowerCase() || 'd6';
+        let dieName = args[0] || 'd6';
+        dieName = dieName.toLowerCase();
 
         // If die exists
         if (!rollDie(dieName)) {
